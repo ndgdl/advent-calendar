@@ -20,6 +20,24 @@ class Day1 < AdventDay
 
   def second_part
     input.last(2).map(&:to_s).map(&:reverse).map(&:to_i).sum
+    previous_sum = nil
+    nbs = input
+
+    count = 0
+
+    until nbs.size < 3
+      if nbs.size >= 3
+        sum = nbs.first(3).sum
+        nbs.delete_at(0)
+      end
+
+      if !previous_sum.nil? && sum > previous_sum
+        count += 1
+      end
+      previous_sum = sum
+    end
+
+    count
   end
 
   private
@@ -29,7 +47,7 @@ class Day1 < AdventDay
   end
 
   def debug_input
-    "12\n34\n56"
+    "199\n200\n208\n210\n200\n207\n240\n269\n260\n263"
   end
 end
 
