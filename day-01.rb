@@ -2,7 +2,20 @@ require_relative 'common'
 
 class Day1 < AdventDay
   def first_part
-    input.last(2).sum
+    previous_data = nil
+    increase_count = 0
+
+    input.each do |data|
+      new_data = data
+
+      if !previous_data.nil? && new_data > previous_data
+        increase_count += 1
+      end
+
+      previous_data = data
+    end
+
+    increase_count
   end
 
   def second_part
