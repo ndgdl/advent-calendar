@@ -20,6 +20,26 @@ class Day2 < AdventDay
   end
 
   def second_part
+    x = 0
+    y = 0
+    aim = 0
+
+    input.each do |data|
+      data = data.split
+      nb = data.last.to_i
+      case data.first
+      when "forward"
+        x += nb
+        if aim > 0
+          y += nb * aim
+        end
+      when "up"
+        aim -= nb
+      when "down"
+        aim += nb
+      end
+    end
+    coordinates = x * y
   end
 
   private
