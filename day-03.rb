@@ -23,6 +23,43 @@ class Day3 < AdventDay
   end
 
   def second_part
+    counts = Hash.new(0)
+    oxygen_data = input
+
+    i = 0
+
+    while oxygen_data.size > 1 do
+
+      oxygen_data.each do |data|
+        counts[i] += data[i] == "1" ? 1 : 0
+      end
+
+      oxygen_data = oxygen_data.select do |data|
+        data[i] == (counts[i] >= (oxygen_data.size - counts[i]) ? "1" : "0")
+      end
+
+      i += 1
+    end
+
+    counts = Hash.new(0)
+    co2_data = input
+
+    i = 0
+
+    while co2_data.size > 1 do
+
+      co2_data.each do |data|
+        counts[i] += data[i] == "1" ? 1 : 0
+      end
+
+      co2_data = co2_data.select do |data|
+          data[i] == (counts[i] >= (co2_data.size - counts[i]) ? "0" : "1")
+        end
+
+      i += 1
+    end
+
+    oxygen_data.join.to_i(2) * co2_data.join.to_i(2)
   end
 
   private
