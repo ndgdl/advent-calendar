@@ -27,7 +27,10 @@ class Day4 < AdventDay
             return {
               board: board,
               location: "row",
-              result: sum * drawn_nbs.last}
+              last_drawn_nb: drawn_nbs.last,
+              winning_turn: drawn_nbs.index(drawn_nbs.last) + 1,
+              result: sum * drawn_nbs.last
+            }
           end
         end
         rows.transpose.each do |column|
@@ -36,7 +39,10 @@ class Day4 < AdventDay
             return {
               board: board,
               location: "column",
-              result: sum * drawn_nbs.last}
+              last_drawn_nb: drawn_nbs.last,
+              winning_turn: drawn_nbs.index(drawn_nbs.last) + 1,
+              result: sum * drawn_nbs.last
+            }
           end
         end
       end
@@ -44,6 +50,51 @@ class Day4 < AdventDay
   end
 
   def second_part
+    nbs = input.first.split(",").map { |nb| nb.to_i}
+
+    boards = Hash.new(0)
+    winning_boards = Hash.new(0)
+
+    i = 0
+    input[1..-1].each do |ary|
+      if ary.empty?
+        i += 1;
+        boards[i] = []
+      else
+        boards[i] << ary.split(" ").map { |nb| nb.to_i }
+      end
+    end
+
+    drawn_nbs = []
+    nbs.each do |nb|
+      drawn_nbs << nb
+
+      boards.each do | board, rows|
+        rows.each do |row|
+          if row.all? { |row_nb| drawn_nbs.include?(row_nb) }
+            sum = rows.flatten.reject { |sum_nb| drawn_nbs.include?(sum_nb) }.sum
+            winning_turn = drawn_nbs.index(drawn_nbs.last) + 1
+            winning_boards[board] = {
+              winning_turn: winning_turn,
+              location: "row",
+              result: sum * drawn_nbs.last
+            } unless winning_boards.key?(board)
+          end
+        end
+        rows.transpose.each do |column|
+          if column.all? { |column_nb| drawn_nbs.include?(column_nb) }
+            sum = rows.transpose.flatten.reject { |sum_nb| drawn_nbs.include?(sum_nb) }.sum
+            winning_turn = drawn_nbs.index(drawn_nbs.last) + 1
+            winning_boards[board] = {
+              winning_turn: winning_turn,
+              location: "row",
+              result: sum * drawn_nbs.last
+            } unless winning_boards.key?(board)
+          end
+        end
+      end
+    end
+    winning_boards
   end
 
   private
